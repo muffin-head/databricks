@@ -1,0 +1,39 @@
+on: [push]
+name: databrideployment
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      ResourceGroupName: databricks-rg
+      ResourceGroupLocation: "eastus"
+    steps:
+    - uses: actions/checkout@master
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
+          if $(az group exists --name ${{ env.ResourceGroupName }}) ; then
+            echo "Azure resource group already exists, skipping creation..."
+          else
+            az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
+            echo "Azure resource group created"
+          fi
+
+  
+    - uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.ResourceGroupName }}
+        template: azuredeploy.json
+        parameters: azuredeploy.parameters.json
+        
+##    - uses: azure/arm-deploy@v1
+#      with:
+#        resourceGroupName: ${{ env.ResourceGroupName }}
+#        template: apache2-on-ubuntu-vm/azuredeploy.json
+#        parameters: apache2-on-ubuntu-vm/azuredeploy.parameters.json  
+
+ 
