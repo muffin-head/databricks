@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.DATA_BRICKS }}
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
