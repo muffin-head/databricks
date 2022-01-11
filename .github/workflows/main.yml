@@ -5,7 +5,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      ResourceGroupName: databricks-rg
+      ResourceGroupName: test-rg
       ResourceGroupLocation: "eastus"
     steps:
     - uses: actions/checkout@master
