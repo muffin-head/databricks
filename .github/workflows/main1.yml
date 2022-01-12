@@ -1,0 +1,49 @@
+on: [push]
+name: databrideployment1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      ResourceGroupName: test-rg
+      ResourceGroupLocation: "eastus"
+    steps:
+    - uses: actions/checkout@master
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.DATA_BRICKS}}
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
+          export ARM_SUBSCRIPTION_ID="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
+          export ARM_TENANT_ID="617e0530-4dad-4d11-befa-afcb00e44e79"
+          export ARM_CLIENT_ID="797bed90-8b53-415e-8b03-b684f54686bc"
+          export ARM_CLIENT_SECRET="ZIh6lMEl2VbiihD87diPM6AvzTU~UdZQ9Q"
+          export MANAGEMENT_RESOURCE_ENDPOINT="https://management.core.windows.net/" # This is Fixed value (DO NOT CHANGE)
+          export AZURE_DATABRICKS_APP_ID="2ff814a6-3304-4ab8-85cb-cd0e6f879c1d" # This is Fixed value (DO NOT CHANGE)
+          export RESOURCE_GROUP="test-rg"
+          export LOCATION="eastus"
+          export DATABRICKS_WORKSPACE="muffinhead"
+          export DATABRICKS_CLUSTER_NAME="test-cluster-01"
+          export DATABRICKS_SPARK_VERSION="7.3.x-scala2.12"
+          export DATABRICKS_NODE_TYPE="Standard_D3_v2"
+          export DATABRICKS_NUM_WORKERS=3 # Need to be number
+          export DATABRICKS_SPARK_CONF='{"spark.speculation":"true"}' # Needs to be valid JSON
+          export DATABRICKS_AUTO_TERMINATE_MINUTES=60 # Need to be a number
+
+
+          echo "Logging in using Azure service priciple"
+          az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+          az account set -s  $ARM_SUBSCRIPTION_ID
+
+
+
+          if [[ $(az group exists --resource-group $RESOURCE_GROUP) = "false" ]]; then
+          echo "Resource Group does not exists, so creating.."
+          az group create --name $RESOURCE_GROUP --location $LOCATION
+          fi
+
+
+
+ 
