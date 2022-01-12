@@ -39,19 +39,7 @@ jobs:
 
 
 
-          if [[ $(az group exists --resource-group $RESOURCE_GROUP) = "false" ]]; then
+          if $(az group exists --resource-group $RESOURCE_GROUP) = "false" ; then
           echo "Resource Group does not exists, so creating.."
           az group create --name $RESOURCE_GROUP --location $LOCATION
           fi
-          $(az databricks workspace list | jq .[].name | grep -w $DATABRICKS_WORKSPACE) = $DATABRICKS_WORKSPACE
-          wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces -g $RESOURCE_GROUP -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
-          echo "Workspce ID: $wsId"
-          workspaceUrl=$(az resource show --resource-type Microsoft.Databricks/workspaces -g "$RESOURCE_GROUP" -n "$DATABRICKS_WORKSPACE" --query properties.workspaceUrl --output tsv)
-          echo "Workspce URL: $workspaceUrl"
-          token_response=$(az account get-access-token --resource $AZURE_DATABRICKS_APP_ID)
-          echo $token_response
-          token=$(jq .accessToken -r <<< "$token_response")
-          echo "Token: $token"
-
-
- 
