@@ -126,7 +126,7 @@ jobs:
         inlineScript: |
           #!/bin/bash
 
-                cluster_id_response=$(curl -X POST \
+                cluster_id_response=(curl -X POST \
                  -H "Authorization: Bearer $token" \
                  -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" \
                  -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" \
