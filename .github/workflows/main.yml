@@ -5,7 +5,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      ResourceGroupName: cluster_cre
+      ResourceGroupName: cluster_cre-rg
       ResourceGroupLocation: "eastus"
       AZURE_DATABRICKS_APP_ID: "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d"
     steps:
