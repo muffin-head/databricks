@@ -38,13 +38,12 @@ jobs:
           export ARM_CLIENT_SECRET="StNGlrnuOmzooZsBMK7~AZODTP~B1pQ-vl"
           export MANAGEMENT_RESOURCE_ENDPOINT="https://management.core.windows.net/" # This is Fixed value (DO NOT CHANGE)
           export AZURE_DATABRICKS_APP_ID="2ff814a6-3304-4ab8-85cb-cd0e6f879c1d" # This is Fixed value (DO NOT CHANGE)
-          export RESOURCE_GROUP="cluster_cre"
           export LOCATION="eastus"
           export DATABRICKS_WORKSPACE="muffinhead250998"
-          export DATABRICKS_CLUSTER_NAME="test-cluster-02"
+          export DATABRICKS_CLUSTER_NAME="test-cluster-25"
           export DATABRICKS_SPARK_VERSION="7.3.x-scala2.12"
           export DATABRICKS_NODE_TYPE="Standard_D3_v2"
-          export DATABRICKS_NUM_WORKERS=3 # Need to be number
+          export DATABRICKS_NUM_WORKERS=1# Need to be number
           export DATABRICKS_SPARK_CONF='{"spark.speculation":"true"}' # Needs to be valid JSON
           export DATABRICKS_AUTO_TERMINATE_MINUTES=60 # Need to be a number
           
