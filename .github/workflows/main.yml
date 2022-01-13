@@ -60,7 +60,7 @@ jobs:
           -d 'grant_type=client_credentials&client_id='$ARM_CLIENT_ID'&resource='$MANAGEMENT_RESOURCE_ENDPOINT'&client_secret='$ARM_CLIENT_SECRET \
           https://login.microsoftonline.com/$ARM_TENANT_ID/oauth2/token)
 
-          mgmt_access_token=$(jq .access_token -r <<< "$az_mgmt_resource_endpoint" )
+          mgmt_access_token=(jq .access_token -r <<< "$az_mgmt_resource_endpoint" )
           echo "Management Access Token: $mgmt_access_token"
           
 
