@@ -121,7 +121,10 @@ jobs:
                 autotermination_minutes: ($at|tonumber),
                 spark_conf: ($sc|fromjson)}' )
 
-
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
 
                 cluster_id_response=$(curl -X POST \
                  -H "Authorization: Bearer $token" \
