@@ -36,7 +36,7 @@ jobs:
           export AZURE_DATABRICKS_APP_ID="2ff814a6-3304-4ab8-85cb-cd0e6f879c1d" # This is Fixed value (DO NOT CHANGE)
           export RESOURCE_GROUP="test-rg"
           export LOCATION="eastus"
-          export DATABRICKS_WORKSPACE="muffinhead"
+          export DATABRICKS_WORKSPACE="Gubonbz25szmlzx"
           export DATABRICKS_CLUSTER_NAME="test-cluster-01"
           export DATABRICKS_SPARK_VERSION="7.3.x-scala2.12"
           export DATABRICKS_NODE_TYPE="Standard_D3_v2"
