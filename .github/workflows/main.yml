@@ -44,14 +44,7 @@ jobs:
           export DATABRICKS_SPARK_CONF='{"spark.speculation":"true"}' # Needs to be valid JSON
           export DATABRICKS_AUTO_TERMINATE_MINUTES=60 # Need to be a number
           
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
 
-          echo "Logging in using Azure service priciple"
-          az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
-          az account set -s  $ARM_SUBSCRIPTION_ID
 
     - uses: Azure/CLI@v1
       with:
