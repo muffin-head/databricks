@@ -74,7 +74,7 @@ jobs:
 
 
    
-          JSON_STRING=$(curl 'https://github.com/muffin-head/databricks/blob/master/cluster.json' | jq '.')
+          JSON_STRING=$(curl -s 'https://github.com/muffin-head/databricks/blob/master/cluster.json' | jq '.')
                 
         
           cluster_id_response=$(curl -X POST \
