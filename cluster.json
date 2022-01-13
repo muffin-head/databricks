@@ -3,5 +3,4 @@
   "spark_version": "7.3.x-scala2.12",
   "node_type_id": "Standard_D3_v2",
   "num_workers": 2
-  "spark_conf": {
-    "spark.speculation": true } ,}
+  "spark_conf": {"spark.speculation": true } ,}
