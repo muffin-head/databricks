@@ -85,7 +85,6 @@ jobs:
 
 
 
-          cluster_id=$(jq .cluster_id -r <<< "$cluster_id_response")
-          echo "Cluster id: $cluster_id"
+
 
  
