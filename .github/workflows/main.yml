@@ -73,8 +73,13 @@ jobs:
 
 
 
-   
-          JSON_STRING=$(curl -s 'https://github.com/muffin-head/databricks/blob/master/cluster.json' | jq '.')
+          JSON_STRING='[{
+            "cluster_name": "my-cluster",
+            "spark_version": "7.3.x-scala2.12",
+            "node_type_id": "Standard_D3_v2",
+            "num_workers": 2,
+            "spark_conf": {"spark.speculation": true }}]'
+          
                 
         
           cluster_id_response=$(curl -X POST \
