@@ -56,7 +56,7 @@ jobs:
 
 
 
-          az_mgmt_resource_endpoint=(curl -X GET -H 'Content-Type: application/x-www-form-urlencoded' \
+          az_mgmt_resource_endpoint=$(curl -X GET -H 'Content-Type: application/x-www-form-urlencoded' \
           -d 'grant_type=client_credentials&client_id='$ARM_CLIENT_ID'&resource='$MANAGEMENT_RESOURCE_ENDPOINT'&client_secret='$ARM_CLIENT_SECRET \
           https://login.microsoftonline.com/$ARM_TENANT_ID/oauth2/token)
 
