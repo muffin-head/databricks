@@ -67,7 +67,7 @@ jobs:
           #!/bin/bash
           
 
-          wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces -g $RESOURCE_GROUP -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
+          wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces --resource-group ${{ env.ResourceGroupName }} -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
           echo "Workspce ID: $wsId"
 
     - uses: Azure/CLI@v1
