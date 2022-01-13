@@ -71,7 +71,11 @@ jobs:
           pat_token=(jq .token_value -r <<< "$pat_token_response")
           echo $pat_token
 
-     
+  
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash   
  
             JSON_STRING=(jq -n -c \
             --arg cn "$DATABRICKS_CLUSTER_NAME" \
