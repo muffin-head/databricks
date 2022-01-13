@@ -74,7 +74,7 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
-          workspaceUrl=$(az resource show --resource-type Microsoft.Databricks/workspaces -g "$RESOURCE_GROUP" -n "$DATABRICKS_WORKSPACE" --query properties.workspaceUrl --output tsv)
+          workspaceUrl=$(az resource show --resource-type Microsoft.Databricks/workspaces --resource-group ${{ env.ResourceGroupName }} -n "$DATABRICKS_WORKSPACE" --query properties.workspaceUrl --output tsv)
           echo "Workspce URL: $workspaceUrl"
 
 
