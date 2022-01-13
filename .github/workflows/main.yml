@@ -107,7 +107,7 @@ jobs:
         inlineScript: |
           #!/bin/bash
  
-            JSON_STRING=$( jq -n -c \
+            JSON_STRING=( jq -n -c \
             --arg cn "$DATABRICKS_CLUSTER_NAME" \
             --arg sv "$DATABRICKS_SPARK_VERSION" \
             --arg nt "$DATABRICKS_NODE_TYPE" \
