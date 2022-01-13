@@ -7,6 +7,7 @@ jobs:
     env:
       ResourceGroupName: test-rg
       ResourceGroupLocation: "eastus"
+      AZURE_DATABRICKS_APP_ID: "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d"
     steps:
     - uses: actions/checkout@master
     - uses: azure/login@v1
@@ -67,7 +68,7 @@ jobs:
           echo "Workspce URL: $workspaceUrl"
 
 
-          token_response=$(az account get-access-token --resource $AZURE_DATABRICKS_APP_ID)
+          token_response=$(az account get-access-token --resource ${{ env.AZURE_DATABRICKS_APP_ID }})
           echo $token_response
 
           token=$(jq .accessToken -r <<< "$token_response")
