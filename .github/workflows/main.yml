@@ -25,11 +25,7 @@ jobs:
             echo "Azure resource group created"
           fi        
         
-    - uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.ResourceGroupName }}
-        template: azuredeploy.json
-        parameters: azuredeploy.parameters.json  
+ 
 
 
     - uses: Azure/CLI@v1
@@ -54,15 +50,7 @@ jobs:
           
 
 
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
 
-          if [[ $(az group exists --resource-group $RESOURCE_GROUP) = "false" ]]; then
-          echo "Resource Group does not exists, so creating.."
-          az group create --name $RESOURCE_GROUP --location $LOCATION
-          fi
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
