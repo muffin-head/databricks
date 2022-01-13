@@ -61,8 +61,9 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
+          az config set extension.use_dynamic_install=yes_without_prompt
 
-          $(az databricks workspace list | jq .[].name | grep -w $DATABRICKS_WORKSPACE) = $DATABRICKS_WORKSPACE
+          az databricks workspace list | jq .[].name | grep -w $DATABRICKS_WORKSPACE = $DATABRICKS_WORKSPACE
 
 
           wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces -g $RESOURCE_GROUP -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
