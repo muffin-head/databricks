@@ -61,7 +61,8 @@ jobs:
           https://login.microsoftonline.com/$ARM_TENANT_ID/oauth2/token)
 
           
-
+          mgmt_access_token=$(jq .access_token -r <<< "$az_mgmt_resource_endpoint" )
+          echo "Management Access Token: $mgmt_access_token"
           
 
 
