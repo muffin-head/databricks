@@ -64,7 +64,7 @@ jobs:
           mgmt_access_token=$(jq .access_token -r <<< "$az_mgmt_resource_endpoint" )
           echo "Management Access Token: $mgmt_access_token"
           
-          pat_token_response=($curl -X POST -H "Authorization: Bearer $token" -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" -d '{"lifetime_seconds": 300,"comment": "this is an example token"}' https://$workspaceUrl/api/2.0/token/create) 
+          pat_token_response=$(curl -X POST -H "Authorization: Bearer $token" -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" -d '{"lifetime_seconds": 300,"comment": "this is an example token"}' https://$workspaceUrl/api/2.0/token/create) 
 
 
           pat_token=$(jq .token_value -r <<< "$pat_token_response")
