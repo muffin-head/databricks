@@ -24,7 +24,7 @@ jobs:
           fi
 
     
-    - uses: Azure/CLI@v2
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
@@ -44,7 +44,7 @@ jobs:
           export DATABRICKS_SPARK_CONF='{"spark.speculation":"true"}' # Needs to be valid JSON
           export DATABRICKS_AUTO_TERMINATE_MINUTES=60 # Need to be a number
           
-    - uses: Azure/CLI@v3
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
@@ -53,7 +53,7 @@ jobs:
           az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
           az account set -s  $ARM_SUBSCRIPTION_ID
 
-    - uses: Azure/CLI@v4
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
@@ -63,14 +63,14 @@ jobs:
           az group create --name $RESOURCE_GROUP --location $LOCATION
           fi
           
-    - uses: Azure/CLI@v5
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
 
           az config set extension.use_dynamic_install=yes_without_prompt
 
-    - uses: Azure/CLI@v6
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
@@ -81,7 +81,7 @@ jobs:
           wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces -g $RESOURCE_GROUP -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
           echo "Workspce ID: $wsId"
 
-    - uses: Azure/CLI@v7
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
@@ -95,7 +95,7 @@ jobs:
           token=$(jq .accessToken -r <<< "$token_response")
           echo "Token: $token"
 
-    - uses: Azure/CLI@v8
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
@@ -107,7 +107,7 @@ jobs:
           mgmt_access_token=$(jq .access_token -r <<< "$az_mgmt_resource_endpoint" )
           echo "Management Access Token: $mgmt_access_token"
 
-    - uses: Azure/CLI@v9
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
@@ -125,7 +125,7 @@ jobs:
           pat_token=$(jq .token_value -r <<< "$pat_token_response")
           echo $pat_token
 
-    - uses: Azure/CLI@v10
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
@@ -152,7 +152,7 @@ jobs:
                  -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" \
                  -d $JSON_STRING \
                  https://$workspaceUrl/api/2.0/clusters/create)
-    - uses: Azure/CLI@v11
+    - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
