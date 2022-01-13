@@ -71,9 +71,9 @@ jobs:
           pat_token=$(jq .token_value -r <<< "$pat_token_response")
           echo $pat_token
 
-
+     
  
-            JSON_STRING=(jq -n -c \
+            JSON_STRING=$(jq -n -c \
             --arg cn "$DATABRICKS_CLUSTER_NAME" \
             --arg sv "$DATABRICKS_SPARK_VERSION" \
             --arg nt "$DATABRICKS_NODE_TYPE" \
@@ -86,7 +86,7 @@ jobs:
               num_workers: ($nw|tonumber),
               autotermination_minutes: ($at|tonumber),
               spark_conf: ($sc|fromjson)}' )
-
+                     
 
 
           cluster_id_response=(curl -X POST \
@@ -100,5 +100,5 @@ jobs:
           cluster_id=$(jq .cluster_id -r <<< "$cluster_id_response")
           echo "Cluster id: $cluster_id"
         
-
+'''
  
