@@ -38,25 +38,12 @@ jobs:
 
 
 
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
           az config set extension.use_dynamic_install=yes_without_prompt
-
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
-          
 
           wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces --resource-group ${{ env.ResourceGroupName }} -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
           echo "Workspce ID: $wsId"
 
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
+
           workspaceUrl=$(az resource show --resource-type Microsoft.Databricks/workspaces --resource-group ${{ env.ResourceGroupName }} -n "$DATABRICKS_WORKSPACE" --query properties.workspaceUrl --output tsv)
           echo "Workspce URL: $workspaceUrl"
 
@@ -67,10 +54,7 @@ jobs:
           token=$(jq .accessToken -r <<< "$token_response")
           echo "Token: $token"
 
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
+
 
           az_mgmt_resource_endpoint=$(curl -X GET -H 'Content-Type: application/x-www-form-urlencoded' \
           -d 'grant_type=client_credentials&client_id='$ARM_CLIENT_ID'&resource='$MANAGEMENT_RESOURCE_ENDPOINT'&client_secret='$ARM_CLIENT_SECRET \
@@ -79,26 +63,15 @@ jobs:
           mgmt_access_token=$(jq .access_token -r <<< "$az_mgmt_resource_endpoint" )
           echo "Management Access Token: $mgmt_access_token"
           
-    
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
+
 
           pat_token_response={$(curl -X POST -H "Authorization: Bearer $token" -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" -d '{"lifetime_seconds": 300,"comment": "this is an example token"}' https://$workspaceUrl/api/2.0/token/create)} 
 
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
 
           pat_token=$(jq .token_value -r <<< "$pat_token_response")
           echo $pat_token
 
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
+
  
             JSON_STRING=(jq -n -c \
             --arg cn "$DATABRICKS_CLUSTER_NAME" \
@@ -107,28 +80,22 @@ jobs:
             -arg nw "$DATABRICKS_NUM_WORKERS" \
             --arg sc "$DATABRICKS_SPARK_CONF" \
             --arg at "$DATABRICKS_AUTO_TERMINATE_MINUTES" \
-                '{cluster_name: $cn,
-                spark_version: $sv,
-                node_type_id: $nt,
-                num_workers: ($nw|tonumber),
-                autotermination_minutes: ($at|tonumber),
-                spark_conf: ($sc|fromjson)}' )
+              '{cluster_name: $cn,
+              spark_version: $sv,
+              node_type_id: $nt,
+              num_workers: ($nw|tonumber),
+              autotermination_minutes: ($at|tonumber),
+              spark_conf: ($sc|fromjson)}' )
 
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
 
-                cluster_id_response=(curl -X POST \
-                 -H "Authorization: Bearer $token" \
+
+          cluster_id_response=(curl -X POST \
+            -H "Authorization: Bearer $token" \
                  -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" \
                  -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" \
                  -d $JSON_STRING \
                  https://$workspaceUrl/api/2.0/clusters/create)
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
+
 
           cluster_id=$(jq .cluster_id -r <<< "$cluster_id_response")
           echo "Cluster id: $cluster_id"
