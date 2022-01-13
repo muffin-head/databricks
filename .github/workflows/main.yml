@@ -73,14 +73,14 @@ jobs:
 
 
 
-          JSON_STRING='{
-            "cluster_name": "my-cluster",
+          JSON_STRING=$('{
+            "cluster_name": "test-cluster-25",
             "spark_version": "7.3.x-scala2.12",
             "node_type_id": "Standard_D3_v2",
-            "num_workers": 2,
-            "spark_conf": {"spark.speculation": true }}'
+            "spark_conf": {"spark.speculation": true },
+            "num_workers": 2
+            }')
           
-           JSON_STRINGS="${JSON_STRING}" | jq '.'     
         
           cluster_id_response=$(curl -X POST \
             -H "Authorization: Bearer $token" \
