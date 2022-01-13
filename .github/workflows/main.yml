@@ -62,18 +62,18 @@ jobs:
           #!/bin/bash
           
 
-          wsId=(az resource show --resource-type Microsoft.Databricks/workspaces --resource-group ${{ env.ResourceGroupName }} -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
+          wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces --resource-group ${{ env.ResourceGroupName }} -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
           echo "Workspce ID: $wsId"
 
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
-          workspaceUrl=(az resource show --resource-type Microsoft.Databricks/workspaces --resource-group ${{ env.ResourceGroupName }} -n "$DATABRICKS_WORKSPACE" --query properties.workspaceUrl --output tsv)
+          workspaceUrl=$(az resource show --resource-type Microsoft.Databricks/workspaces --resource-group ${{ env.ResourceGroupName }} -n "$DATABRICKS_WORKSPACE" --query properties.workspaceUrl --output tsv)
           echo "Workspce URL: $workspaceUrl"
 
 
-          token_response=(az account get-access-token --resource ${{ env.AZURE_DATABRICKS_APP_ID }})
+          token_response=$(az account get-access-token --resource ${{ env.AZURE_DATABRICKS_APP_ID }})
           echo $token_response
 
           token=(jq .accessToken -r <<< "$token_response")
@@ -84,7 +84,7 @@ jobs:
         inlineScript: |
           #!/bin/bash
 
-          az_mgmt_resource_endpoint=$(curl -X GET -H 'Content-Type: application/x-www-form-urlencoded' \
+          az_mgmt_resource_endpoint=(curl -X GET -H 'Content-Type: application/x-www-form-urlencoded' \
           -d 'grant_type=client_credentials&client_id='$ARM_CLIENT_ID'&resource='$MANAGEMENT_RESOURCE_ENDPOINT'&client_secret='$ARM_CLIENT_SECRET \
           https://login.microsoftonline.com/$ARM_TENANT_ID/oauth2/token)
 
@@ -104,7 +104,7 @@ jobs:
         inlineScript: |
           #!/bin/bash
 
-          pat_token=$(jq .token_value -r <<< "$pat_token_response")
+          pat_token=(jq .token_value -r <<< "$pat_token_response")
           echo $pat_token
 
     - uses: Azure/CLI@v1
