@@ -73,11 +73,7 @@ jobs:
 
 
 
-  
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash   
+   
           JSON_STRING=$( jq -n -c \
                 --arg cn "$DATABRICKS_CLUSTER_NAME" \
                 --arg sv "$DATABRICKS_SPARK_VERSION" \
@@ -91,8 +87,18 @@ jobs:
                 num_workers: ($nw|tonumber),
                 autotermination_minutes: ($at|tonumber),
                 spark_conf: ($sc|fromjson)}` )
+                
+        
+          cluster_id_response=$(curl -X POST \
+            -H "Authorization: Bearer $token" \
+            -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" \
+            -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" \
+            -d $JSON_STRING \
+            https://$workspaceUrl/api/2.0/clusters/create)
 
 
+          cluster_id=$(jq .cluster_id -r <<< "$cluster_id_response")
+          echo "Cluster id: $cluster_id"
 
 
 
