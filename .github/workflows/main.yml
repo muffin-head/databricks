@@ -55,16 +55,17 @@ jobs:
           echo "Resource Group does not exists, so creating.."
           az group create --name $RESOURCE_GROUP --location $LOCATION
           fi
-
-
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
           az config set extension.use_dynamic_install=yes_without_prompt
 
-          az databricks workspace list | jq .[].name | grep -w $DATABRICKS_WORKSPACE = $DATABRICKS_WORKSPACE
-
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
+          
 
           wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces -g $RESOURCE_GROUP -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
           echo "Workspce ID: $wsId"
