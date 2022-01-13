@@ -1,5 +1,5 @@
 on: [push]
-name: databrideployment
+name: databrideployment1
 
 jobs:
   build-and-deploy:
@@ -23,14 +23,8 @@ jobs:
             echo "Azure resource group created"
           fi
 
-  
-    - uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.ResourceGroupName }}
-        template: azuredeploy.json
-        parameters: azuredeploy.parameters.json
     
-    - uses: Azure/CLI@v1
+    - uses: Azure/CLI@v2
       with:
         inlineScript: |
           #!/bin/bash
@@ -49,23 +43,37 @@ jobs:
           export DATABRICKS_NUM_WORKERS=3 # Need to be number
           export DATABRICKS_SPARK_CONF='{"spark.speculation":"true"}' # Needs to be valid JSON
           export DATABRICKS_AUTO_TERMINATE_MINUTES=60 # Need to be a number
-
+          
+    - uses: Azure/CLI@v3
+      with:
+        inlineScript: |
+          #!/bin/bash
 
           echo "Logging in using Azure service priciple"
           az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
           az account set -s  $ARM_SUBSCRIPTION_ID
 
-
+    - uses: Azure/CLI@v4
+      with:
+        inlineScript: |
+          #!/bin/bash
 
           if [[ $(az group exists --resource-group $RESOURCE_GROUP) = "false" ]]; then
           echo "Resource Group does not exists, so creating.."
           az group create --name $RESOURCE_GROUP --location $LOCATION
           fi
-
+          
+    - uses: Azure/CLI@v5
+      with:
+        inlineScript: |
+          #!/bin/bash
 
           az config set extension.use_dynamic_install=yes_without_prompt
 
-
+    - uses: Azure/CLI@v6
+      with:
+        inlineScript: |
+          #!/bin/bash
 
           $(az databricks workspace list | jq .[].name | grep -w $DATABRICKS_WORKSPACE) = $DATABRICKS_WORKSPACE
 
@@ -73,7 +81,10 @@ jobs:
           wsId=$(az resource show --resource-type Microsoft.Databricks/workspaces -g $RESOURCE_GROUP -n "$DATABRICKS_WORKSPACE" --query id -o tsv)
           echo "Workspce ID: $wsId"
 
-
+    - uses: Azure/CLI@v7
+      with:
+        inlineScript: |
+          #!/bin/bash
           workspaceUrl=$(az resource show --resource-type Microsoft.Databricks/workspaces -g "$RESOURCE_GROUP" -n "$DATABRICKS_WORKSPACE" --query properties.workspaceUrl --output tsv)
           echo "Workspce URL: $workspaceUrl"
 
@@ -84,7 +95,10 @@ jobs:
           token=$(jq .accessToken -r <<< "$token_response")
           echo "Token: $token"
 
-
+    - uses: Azure/CLI@v8
+      with:
+        inlineScript: |
+          #!/bin/bash
 
           az_mgmt_resource_endpoint=$(curl -X GET -H 'Content-Type: application/x-www-form-urlencoded' \
           -d 'grant_type=client_credentials&client_id='$ARM_CLIENT_ID'&resource='$MANAGEMENT_RESOURCE_ENDPOINT'&client_secret='$ARM_CLIENT_SECRET \
@@ -93,7 +107,10 @@ jobs:
           mgmt_access_token=$(jq .access_token -r <<< "$az_mgmt_resource_endpoint" )
           echo "Management Access Token: $mgmt_access_token"
 
-
+    - uses: Azure/CLI@v9
+      with:
+        inlineScript: |
+          #!/bin/bash
 
           pat_token_response=$(curl -X POST \
           -H "Authorization: Bearer $token" \
@@ -108,7 +125,10 @@ jobs:
           pat_token=$(jq .token_value -r <<< "$pat_token_response")
           echo $pat_token
 
-
+    - uses: Azure/CLI@v10
+      with:
+        inlineScript: |
+          #!/bin/bash
  
             JSON_STRING=$( jq -n -c \
             --arg cn "$DATABRICKS_CLUSTER_NAME" \
@@ -132,7 +152,10 @@ jobs:
                  -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" \
                  -d $JSON_STRING \
                  https://$workspaceUrl/api/2.0/clusters/create)
-
+    - uses: Azure/CLI@v11
+      with:
+        inlineScript: |
+          #!/bin/bash
 
           cluster_id=$(jq .cluster_id -r <<< "$cluster_id_response")
           echo "Cluster id: $cluster_id"
