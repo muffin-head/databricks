@@ -5,7 +5,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      json: '{"cluster_name": "my-cluster","spark_version": "7.3.x-scala2.12","node_type_id": "Standard_D3_v2","spark_conf": {"spark.speculation": true},"num_workers": 2}'
       ResourceGroupName: cluster_cre-rg
       ResourceGroupLocation: "eastus"
       AZURE_DATABRICKS_APP_ID: "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d"
@@ -71,10 +70,11 @@ jobs:
           pat_token_response=$(curl -X POST -H "Authorization: Bearer $token" -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" -d '{"lifetime_seconds": 300,"comment": "this is an example token"}' https://$workspaceUrl/api/2.0/token/create) 
 
 
-          pat_token=$(jq .token_value -r <<< "$pat_token_response")
+          pat_token=$(jq .token_value -r <<< "$pat_token_response") 
           echo $pat_token
-
- 
+          
+          JSON_STRING=$(jo cluster_name=my-cluster spark_version=7.3.x-scala2.12 node_type_id=Standard_D3_v2 spark_conf=spark.speculation=true num_workers=2 )
+          
           
 
 
@@ -82,8 +82,8 @@ jobs:
             -H "Authorization: Bearer $token" \
             -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" \
             -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" \
-            -d ${{ env.json }} \
-            https://$workspaceUrl/api/2.0/clusters/create)
+            -d $JSON_STRING \
+             https://$workspaceUrl/api/2.0/clusters/create)
 
 
             cluster_id=$(jq .cluster_id -r <<< "$cluster_id_response")
