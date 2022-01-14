@@ -73,7 +73,7 @@ jobs:
           pat_token=$(jq .token_value -r <<< "$pat_token_response")
           echo $pat_token
 
-          JSON_STRING=$( jq --null-input \
+          JSON_STRING=$( jq -n -c \
                 --arg cn "$DATABRICKS_CLUSTER_NAME" \
                 --arg sv "$DATABRICKS_SPARK_VERSION" \
                 --arg nt "$DATABRICKS_NODE_TYPE" \
