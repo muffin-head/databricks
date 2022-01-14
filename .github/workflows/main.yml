@@ -80,8 +80,18 @@ jobs:
         name: "credentials.json"
         json: ${{ secrets.MY_JSON }}
           
-        
-          
+        inlineScript: |
+          #!/bin/bash
+          cluster_id_response=$(curl -X POST \
+              -H "Authorization: Bearer $token" \
+          -H "X-Databricks-Azure-SP-Management-Token: $mgmt_access_token" \
+          -H "X-Databricks-Azure-Workspace-Resource-Id: $wsId" \
+          -d $JSON_STRING \
+          https://$workspaceUrl/api/2.0/clusters/create)
+
+
+          cluster_id=$(jq .cluster_id -r <<< "$cluster_id_response")
+          echo "Cluster id: $cluster_id"  
 
 
 
